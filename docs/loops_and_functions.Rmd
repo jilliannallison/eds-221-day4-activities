@@ -1,0 +1,74 @@
+---
+title: 'Day 4 Activity: Loops and Functions'
+author: "Jillian Allison"
+date: "`r Sys.Date()`"
+output: html_document
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+## Part 1: For loops revisited
+### Task 1 
+
+Create two sequences, one called weekdays that contains days of the week
+("Monday", "Tuesday", "Wednesday", etc.) and one called transects that
+contains the series of transect names "Transect A", "Transect
+B,"Transect C". Write a nested for loop that creates a matrix containing... some stuff
+
+```{r}
+weekdays <- c("Monday","Tuesday","Wednesday","Thursday","Friday")
+transects <- c("Transect A","Transect B","Transect C")
+schedule <- matrix(nrow = length(weekdays), ncol = length(transects)) 
+
+for (i in seq_along(transects)){
+  for (j in seq_along(weekdays)){
+    value <- paste0(weekdays[j],"-", transects[i])
+    schedule[j,i] <- value
+  }
+}
+```
+
+## Part 2: Functions introduced 
+### Task 2
+
+```{r}
+calc_force <- function(m, a) {
+  force <- m * a
+  paste("The resulting force is", force, "newtons")
+}
+
+calc_force(m = 5, a = 20) # returns 100 newtowns 
+```
+
+### Task 3 
+```{r}
+fish_lengths <- seq(from = 0, to = 100, by = 1)
+fish_parms <- tribble(~sci_name,~common_name,~a_est,~b_est,"Chanos chanos","Milkfish",0.0905,2.52,"Sphyraena barracuda","Great barracuda",0.0181,3.27,"Caranx ignobilis","Giant trevally",0.0353,3.05)
+
+calc_fish_weight <- function(fish_name, total_length){
+  a <- subset(fish_parms, common_name == fish_name)$a_est
+  b <- subset(fish_parms, common_name == fish_name)$b_est
+  L <- total_length
+  milkfish_weights <- a*(L^b)
+  print(milkfish_weights)
+}
+
+calc_fish_weight("Milkfish",fish_lengths)
+```
+
+```{r}
+wave_heights <- seq(from = 0, to = 3, by = 0.2)
+wave_power <- function(height, period) {
+  power <- 0.5 * height^2 * period
+  print(power)
+}
+
+wave_power(wave_heights, 8)
+```
+
